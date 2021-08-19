@@ -1,3 +1,13 @@
+The following walkthrough will help you set up a demo to showcase:
+
+1. Integration between Microsoft Teams and GitHub
+1. CI/CD with GitHub Actions
+1. Environment protection with GitHub Environments
+1. Azure Web App for Containers
+1. Azure Bicep for resource deployment
+
+Read more about it on my [blog](https://www.cloudamentals.com/posts/github-environments/)
+
 ## Pre-requisites
 
 You will need:
