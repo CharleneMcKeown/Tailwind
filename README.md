@@ -134,6 +134,8 @@ We need to package the application and build it into a container image using Doc
 
 Azure Key Vault is the place where we will put the secret - we can securely access it later during deployments.
 
+## Checking Progress
+
 Okay, after reading all that - your app has probably deployed! Navigate to the **Actions** tab in your repo. You should see a deployment either in progress or finished. Click on it. 
 
 You should see something like this if it's still in progress:
