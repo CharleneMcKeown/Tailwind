@@ -1,0 +1,65 @@
+name: Build .NET Core
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+    - ".github/workflows/**"
+    - "*.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    env:
+      CI: ""
+
+    steps:
+
+    - name: Microsoft Teams Notification
+      uses: jdcargile/ms-teams-notification@v1.3
+      with:
+        github-token: ${{ github.token }}
+        ms-teams-webhook-uri: ${{ secrets.TEAMS_WEBHOOK }}
+        notification-summary: Automated build in progress
+        notification-color: 007bff
+
+    - uses: actions/checkout@v2
+   
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.1.x
+   
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+   
+    - name: Install dependencies
+      run: dotnet restore ./Source/*.sln
+   
+    - name: Build
+      run: dotnet build ./Source/*.sln --configuration Release --no-restore
+   
+    - name: Test
+      run: dotnet test ./Source/*.sln --no-restore --verbosity normal
+    
+    - name: Publish
+      run: dotnet publish ./Source/Tailwind.Traders.Web/Tailwind.Traders.Web.csproj -c Release -o './staging'
+
+    - name: Create Issue Action
+      if: ${{ failure() }}
+      uses: nashmaniac/create-issue-action@v1.1
+      with:
+        title: Build failed
+        token: ${{ github.token }}
+        assignees: ${{github.actor}}
+
+    - name: Microsoft Teams Notification
+      uses: jdcargile/ms-teams-notification@v1.3
+      with:
+        github-token: ${{ github.token }}
+        ms-teams-webhook-uri: ${{ secrets.TEAMS_WEBHOOK }}
+        notification-summary: Build Succeeded!
+        notification-color: 28a745
+  

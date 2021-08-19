@@ -1,0 +1,133 @@
+name: Deploy .NET Core
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+    - ".github/workflows/**"
+    - "*.yml"
+    - "README.md"
+  
+jobs:
+  deployInfra:
+    name: deployInfra
+    runs-on: ubuntu-18.04
+    outputs:
+      web: ${{ steps.createInfra.outputs.web }}
+      acr: ${{ steps.createInfra.outputs.acr }}
+      kv: ${{ steps.createInfra.outputs.kv }}
+    steps:
+    
+    - uses: actions/checkout@v2
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Azure CLI Action
+      id: createInfra
+      uses: Azure/cli@1.0.4
+      with:
+        inlineScript: |
+            az group create -l westeurope -n TailwindTraders
+            WEB=$(az deployment group create -g TailwindTraders -f ./Deploy/main.bicep)
+            SITE=$(echo $WEB | jq -re .properties.outputs.web.value)
+            ACR=$(echo $WEB | jq -re .properties.outputs.acr.value)
+            KV=$(echo $WEB | jq -re .properties.outputs.kv.value)
+            echo "::set-output name=web::$SITE"
+            echo "::set-output name=acr::$ACR"
+            echo "::set-output name=kv::$KV"
+
+  deployStaging:
+    environment:
+      name: Staging
+      url: 'http://${{ needs.deployInfra.outputs.web }}-staging.azurewebsites.net'
+    needs: deployInfra
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.4
+
+    - name: Microsoft Teams Deploy Card
+      uses: toko-bifrost/ms-teams-deploy-card@3.1.2
+      if: always()
+      with:
+        webhook-uri: ${{ secrets.TEAMS_WEBHOOK }}
+        github-token: ${{ github.token }} 
+        environment: staging
+        card-layout-start: complete
+        card-layout-exit: cozy
+        show-on-exit: true
+        view-status-action-text: View staging deploy status
+        custom-actions: |
+          - text: View Staging Website
+            url: "http://${{ needs.deployInfra.outputs.web }}-staging.azurewebsites.net"
+
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+    - name: Azure key vault - Get Secrets
+      id: getSecrets
+      uses: Azure/get-keyvault-secrets@v1.2
+      with:
+        keyvault: ${{ needs.deployInfra.outputs.kv }}
+        secrets: 'acrPassword'
+
+    - name: Azure Container Registry Login
+      uses: Azure/docker-login@v1
+      with:
+        username: ${{ needs.deployInfra.outputs.acr }}
+        password: ${{ steps.getSecrets.outputs.acrPassword }}
+        login-server: ${{ needs.deployInfra.outputs.acr }}.azurecr.io
+
+    - run: |
+        cd Source/Tailwind.Traders.Web
+        docker build . -t ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
+        docker push ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
+
+    - name: Deploy image to staging slot
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ needs.deployInfra.outputs.web }}
+        slot-name: staging
+        images: ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
+  
+  deployProduction:
+    environment:
+      name: Production
+      url: 'http://${{ needs.deployInfra.outputs.web }}.azurewebsites.net'
+    needs: [deployStaging, deployInfra]
+    runs-on: ubuntu-18.04
+    env: 
+      CI: ""
+      
+    steps:
+    - uses: actions/checkout@v2
+  
+    - name: Microsoft Teams Deploy Card
+      uses: toko-bifrost/ms-teams-deploy-card@3.1.2
+      if: always()
+      with:
+        webhook-uri: ${{ secrets.TEAMS_WEBHOOK }}
+        github-token: ${{ github.token }} 
+        environment: production
+        card-layout-start: complete
+        card-layout-exit: cozy
+        show-on-exit: true
+        view-status-action-text: View prod deployment status
+        custom-actions: |
+          - text: View Production Website
+            url: "http://${{ needs.deployInfra.outputs.web }}.azurewebsites.net"
+
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:          
+        creds: ${{ secrets.AZURE_CREDENTIALS  }}
+      
+    - name: Swap staging to production
+      run: |
+        az webapp deployment slot swap --name ${{ needs.deployInfra.outputs.web }} --resource-group TailwindTraders --slot staging --target-slot production
+
