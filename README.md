@@ -1,6 +1,6 @@
 # Deploying to Azure Web Apps with DevOps and ChatOps
 
-![Tailwind](/Documents/Images/website.PNG)
+![Tailwind](/Documents/Images/site.PNG)
 
 The following walkthrough will help you set up a demo to showcase:
 
