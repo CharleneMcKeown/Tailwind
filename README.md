@@ -112,7 +112,7 @@ We now need to do some configuration in GitHub.
 
  1. This will trigger another pipeline to build the application and deploy it!
 
-    ![Merge](/Documents/Images/merge.PNG)
+    ![Deployment](/Documents/Images/deployment.PNG)
 
 So what's happening?
 
