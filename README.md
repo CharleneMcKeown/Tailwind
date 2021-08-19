@@ -80,19 +80,35 @@ We now need to do some configuration in GitHub.
 
 ## Update Source code
 
-1. In your repo, navigate to **Deploy/main.bicep** and prepare to edit it (in your code editor or in the browser).
-1. On line 15, add in your objectId that you saved earlier on and save the file. If working locally, run:
+1. In your repo, navigate to **Deploy/main.bicep** and click **edit**.
 
-    ```
-    git add .
-    git commit -m "Updated Bicep file"
-    git push
-    ```
-This should trigger the GitHub workflow to build and deploy the application! So what's actually happening? 
+    ![Code change](/Documents/Images/editobjectid.PNG)
+
+1. On line 14, add in your objectId that you saved earlier on and create a new PR at the bottom instead of commiting to main:
+
+    ![PR](/Documents/Images/pr.PNG)
+
+    ![PR2](/Documents/Images/pr2.PNG)
+
+1. This should trigger the GitHub workflow 'build.yml' to build the application. Check it out on the **Actions** tab. 
+
+    ![Check](/Documents/Images/check.PNG)
+
+    ![Action](/Documents/Images/action.PNG)
+
+1. Once it is green, go ahead and merge the pull request.
+
+    ![Merge](/Documents/Images/merge.PNG)
+
+ 1. This will trigger another pipeline to build the application and deploy it!
+
+    ![Merge](/Documents/Images/merge.PNG)
+
+So what's happening?
 
 ### Azure Bicep
 
-Azure Bicep is used to declare what our resources should look like, including dependencies and configuration. Bicep is deploying:
+Azure Bicep is used to declare what our resources should look like, including dependencies and configuration. Bicep is deploying the main.bicep file, which defines the following resources:
 
 ### Azure Web App with two slots - Production and Staging
 
@@ -164,7 +180,7 @@ Lastly, the point of this exercise to make sure that deployments are done safely
 That is really all you need. To demo this:
 
 1. Create a new branch off main
-1. Edit: **/Source/Tailwind.Traders.Web/ClientApp/src/assets/locales/translation.json** to a new price.
+1. Edit: **/Source/Tailwind.Traders.Web/ClientApp/src/assets/locales/translation.json** to a add a new free shipping price on line 5.
 1. Open a Pull Request into main
 1. Observe your Actions tab - you will see that the build.yml pipeline is building and testing the application. 
 1. Once it passes, complete the merge.
