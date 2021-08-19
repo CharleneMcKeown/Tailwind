@@ -7,6 +7,7 @@ on:
     - ".github/workflows/**"
     - "*.yml"
     - "README.md"
+    - "Documents"
   
 jobs:
   deployInfra:
