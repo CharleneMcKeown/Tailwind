@@ -2,9 +2,8 @@ param sku string = 'Standard'
 param skuCode string = 'S1'
 param registrySku string = 'Standard'
 param workerSize int = 1
-var dockerimage = '${acr_name_var}.azurecr.io/tailwindtraders-app:latest'
 param apiBaseUrl string = 'https://backend.tailwindtraders.com/'
-
+var dockerimage = '${acr_name_var}.azurecr.io/tailwindtraders-app:latest'
 var website_name_var = 'tailwindtraders${uniqueString(resourceGroup().id)}'
 var plan_name_var = 'ttappserviceplan${uniqueString(resourceGroup().id)}'
 var acr_name_var = 'ttacr${uniqueString(resourceGroup().id)}'
