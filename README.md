@@ -70,9 +70,7 @@ We now need to do some configuration in GitHub.
 
 1. In your repo, navigate to Settings > Environments.
 1. Create a new environment called Staging. 
-1. Create another new environment called Production. Make sure you add an approver (it can be yourself) and set the deployment branch to main. This ensures that only the main branch can ever be deployed to our production environment. It should look like this:
-
-    ![Environments](/Documents/Images/envs.PNG)
+1. Create another new environment called Production. Make sure you add an approver (it can be yourself).
 1. Lastly, you will most likely have to enable actions because this is a forked repo. Navigate to the **Actions** tab and do that:
 
     ![Enable Actions](/Documents/Images/enableactions.PNG)
