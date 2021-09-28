@@ -21,7 +21,7 @@ You will need:
 
 ## Fork the source code
 
-1. Make sure you are logged into GitHub, then navigate to https://github.com/CharleneMcKeown/TailwindTraders and fork the repo. This will create a copy of the repo in your GitHub account. 
+1. Make sure you are logged into GitHub, then navigate to https://github.com/CharleneMcKeown/Tailwind and fork the repo. This will create a copy of the repo in your GitHub account. 
 1. Clone the newly created repo from your account (optional - we will be making small code changes that can be done in the browser)
 
 ## Setup Teams
