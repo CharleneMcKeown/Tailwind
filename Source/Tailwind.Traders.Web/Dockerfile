@@ -16,7 +16,7 @@ COPY . .
 RUN dotnet build
 RUN dotnet publish -o /ttweb
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime as runtime
+FROM mcr.microsoft.com/dotnet/aspnet:2.1 as runtime
 WORKDIR /web
 COPY --from=build-net /ttweb .
 COPY --from=build-node /ClientApp/build ./ClientApp/build
