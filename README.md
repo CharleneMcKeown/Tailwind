@@ -209,3 +209,5 @@ Another reason - you will notice that every time we push a new version of our ap
 >Side Note: Bicep doesn't yet have the ability to ignore changes to certain fields like Terraform does with lifecycle_ignore.
 
 Hope you found this useful!
+
+![example workflow](https://github.com/charlenemckeown/tailwind/actions/workflows/dotnetcore.yml/badge.svg)
