@@ -210,4 +210,4 @@ Another reason - you will notice that every time we push a new version of our ap
 
 Hope you found this useful!
 
-![example workflow](https://github.com/charlenemckeown/tailwind/actions/workflows/dotnetcore.yml/badge.svg)
+![Tailwind](https://github.com/charlenemckeown/tailwind/actions/workflows/dotnet-core.yml/badge.svg)
