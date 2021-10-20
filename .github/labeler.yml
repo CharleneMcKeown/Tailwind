@@ -1,1 +1,1 @@
-frontend: Source/*
+frontend: Source/**/*
