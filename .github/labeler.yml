@@ -1,2 +1,1 @@
-frontend:
-- any: ['Source']
+frontend: Source/*
