@@ -96,12 +96,12 @@ jobs:
         slot-name: staging
         images: ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
     
-    - name: 'Azure Load Testing'
-      uses: azure/load-testing@main
-      with:
-        loadTestConfigFile: 'SampleApp.yaml'
-        loadTestResource: ${{ needs.deployInfra.outputs.web }}
-        resourceGroup: TailwindTraders
+    # - name: 'Azure Load Testing'
+    #   uses: azure/load-testing@main
+    #   with:
+    #     loadTestConfigFile: 'SampleApp.yaml'
+    #     loadTestResource: ${{ needs.deployInfra.outputs.web }}
+    #     resourceGroup: TailwindTraders
   
   deployProduction:
     environment:
