@@ -39,35 +39,14 @@ In order to deploy and access Azure resources, we need an identity that has the 
 1. In your terminal or Cloud Shell, run the following command:
 
     ```
-    az ad sp create for rbac
+    az ad sp create for rbac -n tailwindsp  --role contributor --scopes /subscriptions/<subId> --sdk-auth
     ```
 
-    The output will look something like this:
-    ```
-        {
-        "appId": "",
-        "displayName": "",
-        "name": "",
-        "password": "",
-        "tenant": ""
-        }
-    ```
-1. Copy and paste the output into a text editor.
-1. We need to change this slightly. Update **appId** to **clientId**, **password** to **clientSecret**, **tenant** to **tenantId** and finally, add in a new key value pair for your **subscriptionId**. It should now look like the below: 
-
-    ``` {
-        "clientId": "",
-        "displayName": "",
-        "name": "",
-        "clientSecret": "",
-        "tenantId": "",
-        "subscriptionId": ""
-        }
-    ```
+1. Copy and paste the output into a text editor. Note the AppId - you will need it in the next step.
 
 1. Return to your terminal or Cloud Shell, and run the following command to get the object id of your newly created service principal. Copy it and paste it into your text editor for the next step. 
     ```
-    az ad sp show --id <putYourclientIdHere>
+    az ad sp show --id <putYourAppIdHere>
     ```
 
 ## GitHub Secrets
