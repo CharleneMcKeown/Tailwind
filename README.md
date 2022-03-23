@@ -36,7 +36,7 @@ Create two new connectors for your target Microsoft Teams channel.
 
 In order to deploy and access Azure resources, we need an identity that has the right permissions.
 
-1. In your terminal or Cloud Shell, run the following command:
+1. In your terminal or Cloud Shell, run the following command, replacing <subid> with your Azure subscription ID. 
 
     ```
     az ad sp create for rbac -n tailwindsp  --role contributor --scopes /subscriptions/<subId> --sdk-auth
