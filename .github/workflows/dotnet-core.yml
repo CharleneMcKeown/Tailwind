@@ -49,8 +49,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      with:
-        path: main
 
     - name: Microsoft Teams Deploy Card
       uses: toko-bifrost/ms-teams-deploy-card@3.1.2
@@ -87,6 +85,7 @@ jobs:
         login-server: ${{ needs.deployInfra.outputs.acr }}.azurecr.io
 
     - run: |
+        ls
         cd Source/Tailwind.Traders.Web
         docker build . -t ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
         docker push ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
