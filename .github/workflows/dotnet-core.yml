@@ -85,8 +85,8 @@ jobs:
         login-server: ${{ needs.deployInfra.outputs.acr }}.azurecr.io
 
     - run: |
-        ls
-        cd Source/Tailwind.Traders.Web
+        ls -la
+        cd ./Source/Tailwind.Traders.Web
         docker build . -t ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
         docker push ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
 
