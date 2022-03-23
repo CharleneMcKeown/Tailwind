@@ -1,6 +1,7 @@
 name: Deploy .NET Core
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
     paths-ignore:
@@ -93,9 +94,9 @@ jobs:
     - name: Deploy image to staging slot
       uses: Azure/webapps-deploy@v2
       with:
-        app-name: ${{ needs.deployInfra.outputs.web }}
+        app-name: '${{ needs.deployInfra.outputs.web }}'
         slot-name: staging
-        images: ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
+        images: '${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest'
 
     - name: Checkout load test
       uses: actions/checkout@v2.4.0
