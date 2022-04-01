@@ -71,7 +71,7 @@ jobs:
       name: Build .net
       run: |
         dotnet restore ./Source/*.sln
-        dotnet build ./Source/*.sln --configuration Release --no-restore
+        dotnet build ./Source/*.sln --configuration Release --no-restore /p:UseSharedCompilation=false
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
