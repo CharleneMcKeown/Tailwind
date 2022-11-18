@@ -80,9 +80,9 @@ jobs:
         docker push ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
 
     - name: Deploy image to staging slot
-      uses: Azure/webapps-deploy@v2.2.0
+      uses: Azure/webapps-deploy@v2.2.3
       with:
-        app-name: ${{ needs.deployInfra.outputs.web }}
+        app-name: '${{ needs.deployInfra.outputs.web }}'
         slot-name: staging
         images: ${{ needs.deployInfra.outputs.acr }}.azurecr.io/tailwindtraders-app:latest
   
