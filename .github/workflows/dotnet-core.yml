@@ -14,9 +14,6 @@ jobs:
   deployInfra:
     name: deployInfra
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     outputs:
       web: ${{ steps.createInfra.outputs.web }}
       acr: ${{ steps.createInfra.outputs.acr }}
@@ -27,9 +24,7 @@ jobs:
     - name: 'Az CLI login with OIDC'
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Create infrastructure
       id: createInfra
